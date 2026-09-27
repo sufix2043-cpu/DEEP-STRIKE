@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сучасний Веб-Інтерфейс | Демонстрація Ефектів</title>
+    <style>
+        :root {
+            --bg-glow: #060913;
+            --bg-card: rgba(17, 24, 39, 0.7);
+            --accent-neon: #10b981;
+            --accent-glow: rgba(16, 185, 129, 0.4);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-glass: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Базові стилі та плавний рух */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-glow);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        /* Ефект плавного появи всього інтерфейсу */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Скляний контейнер (Glassmorphic Card) */
+        .premium-container {
+            max-width: 600px;
+            width: 100%;
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            padding: 40px;
+            border-radius: 28px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Заголовок з градієнтом */
+        .title-gradient {
+            font-size: 2.4rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #ffffff 30%, var(--text-muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.03em;
+        }
+
+        /* ФУНКЦІЯ: Інтерактивний Прогрес-бар з анімацією */
+        .progress-container {
+            margin-bottom: 32px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border-glass);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .progress-bg {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        @keyframes fillBar {
+            from { width: 0%; }
+            to { width: 68%; }
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-neon), #34d399);
+            box-shadow: 0 0 12px var(--accent-glow);
+            border-radius: 100px;
+            width: 0%;
+            animation: fillBar 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards;
+        }
+
+        /* ФУНКЦІЯ: Перемикання вкладок (Tabs) без JavaScript */
+        .tabs-wrapper {
+            margin-top: 32px;
+            text-align: left;
+        }
+
+        .tab-radio {
+            display: none;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 4px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-glass);
+        }
+
+        .tab-label {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid var(--border-glass);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* Логіка активації вкладок */
+        #tab1:checked ~ .tab-nav [for="tab1"],
+        #tab2:checked ~ .tab-nav [for="tab2"] {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        #tab1:checked ~ #content1,
+        #tab2:checked ~ #content2 {
+            display: block;
+            animation: fadeInUp 0.4s ease forwards;
+        }
+
+        /* Свічення кнопки при наведенні */
+        .neon-btn {
+            width: 100%;
+            background: var(--accent-neon);
+            color: #000000;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+        }
+
+        .neon-btn:hover {
+            box-shadow: 0 0 20px var(--accent-glow);
+            transform: translateY(-1px);
+        }
+
+        .neon-btn:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="premium-container">
+        <h1 class="title-gradient">Головна Сторінка</h1>
+
+        <!-- Блок прогресу -->
+        <div class="progress-container">
+            <div class="progress-label">
+                <span>Поточний прогрес проекту</span>
+                <strong>68%</strong>
+            </div>
+            <div class="progress-bg">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+
+        <button class="neon-btn">Інтерактивна Дія</button>
+
+        <!-- Перемикач контенту (Таби) -->
+        <div class="tabs-wrapper">
+            <input type="radio" name="tabs" id="tab1" class="tab-radio" checked>
+            <input type="radio" name="tabs" id="tab2" class="tab-radio">
+            
+            <div class="tab-nav">
+                <label for="tab1" class="tab-label">Опис модулю</label>
+                <label for="tab2" class="tab-label">Оновлення</label>
+            </div>
+
+            <div id="content1" class="tab-content">
+                <p>Цей розділ використовує сучасну технологію CSS-перемикання. Він адаптивний, швидко завантажується і працює без використання важких скриптів на будь-яких мобільних пристроях.</p>
+            </div>
+            <div id="content2" class="tab-content">
+                <p>Тут ви можете розміщувати інформаційні картки, новини або технічні логи розробки. Кожне перемикання супроводжується мікроанімацією появи.</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
